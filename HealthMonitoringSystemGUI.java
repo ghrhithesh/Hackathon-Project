@@ -76,7 +76,36 @@ class Report {
     public String toString() {
         return String.format("%-10s %-15s %-15s %-20s %-20s %-20s %-20s",
                 visitNumber, admissionDate, doctor, reasonForAdmission, principalDiagnosis, tests, medication);
+    
     }
+    public String getVisitNumber() {
+        return visitNumber;
+    }
+    
+    public String getAdmissionDate() {
+        return admissionDate;
+    }
+    
+    public String getDoctor() {
+        return doctor;
+    }
+    
+    public String getReasonForAdmission() {
+        return reasonForAdmission;
+    }
+    
+    public String getPrincipalDiagnosis() {
+        return principalDiagnosis;
+    }
+    
+    public String getTests() {
+        return tests;
+    }
+    
+    public String getMedication() {
+        return medication;
+    }
+    
 }
 
 public class HealthMonitoringSystemGUI extends JFrame {
@@ -324,43 +353,50 @@ public class HealthMonitoringSystemGUI extends JFrame {
 
     private JPanel createViewReportPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
+    
+        // Input Panel
         JPanel inputPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
+    
         JLabel idLabel = new JLabel("Patient ID:");
         JTextField idField = new JTextField(20);
-
+    
         JLabel nameLabel = new JLabel("Patient Name:");
         JTextField nameField = new JTextField(20);
-
+    
         JButton viewButton = new JButton("View Reports");
-        JTable reportTable = new JTable();
+    
+        // Table for displaying the reports
+        String[] columnNames = {"Visit No", "Admission Date", "Doctor", "Reason", "Diagnosis", "Tests", "Medication"};
+        JTable reportTable = new JTable(new Object[0][7], columnNames);
         JScrollPane scrollPane = new JScrollPane(reportTable);
-
+    
         gbc.gridx = 0; gbc.gridy = 0;
         inputPanel.add(idLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 0;
         inputPanel.add(idField, gbc);
-
+    
         gbc.gridx = 0; gbc.gridy = 1;
         inputPanel.add(nameLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1;
         inputPanel.add(nameField, gbc);
-
+    
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
+        inputPanel.add(viewButton, gbc);
+    
         // Back to Home Button
+        JPanel bottomPanel = new JPanel();
         JButton backButton = new JButton("Back to Home");
         backButton.addActionListener(e -> showPanel("Home"));
-
-        inputPanel.add(backButton, gbc); // Adding the back button to the input panel
-
+        bottomPanel.add(backButton);
+    
         viewButton.addActionListener(e -> {
-            String id = idField.getText();
-            String name = nameField.getText();
+            String id = idField.getText().trim();
+            String name = nameField.getText().trim();
             Patient patient = null;
-
+    
             if (!id.isEmpty()) {
                 patient = patients.get(id);
             } else if (!name.isEmpty()) {
@@ -371,27 +407,36 @@ public class HealthMonitoringSystemGUI extends JFrame {
                     }
                 }
             }
-
+    
             if (patient != null) {
-                String[] columnNames = {"Visit No", "Admission Date", "Doctor", "Reason", "Diagnosis", "Tests", "Medication"};
+                String[] columnNamesArray = {"Visit No", "Admission Date", "Doctor", "Reason", "Diagnosis", "Tests", "Medication"};
                 Object[][] data = new Object[patient.getReports().size()][7];
                 int i = 0;
                 for (Report report : patient.getReports()) {
-                    data[i][0] = report.toString();
+                    data[i][0] = report.getVisitNumber(); // Visit Number
+                    data[i][1] = report.getAdmissionDate(); // Admission Date
+                    data[i][2] = report.getDoctor(); // Doctor
+                    data[i][3] = report.getReasonForAdmission(); // Reason for Admission
+                    data[i][4] = report.getPrincipalDiagnosis(); // Principal Diagnosis
+                    data[i][5] = report.getTests(); // Tests
+                    data[i][6] = report.getMedication(); // Medication
                     i++;
                 }
-                reportTable.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
+                reportTable.setModel(new javax.swing.table.DefaultTableModel(data, columnNamesArray));
             } else {
                 JOptionPane.showMessageDialog(this, "Patient not found.");
             }
         });
-
+    
         panel.add(inputPanel, BorderLayout.NORTH);
-        panel.add(viewButton, BorderLayout.CENTER);
-        panel.add(scrollPane, BorderLayout.SOUTH);
-
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+    
         return panel;
     }
+    
+    
+    
 
     private void showPanel(String panelName) {
         CardLayout cl = (CardLayout) getContentPane().getLayout();
