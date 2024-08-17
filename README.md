@@ -1,8 +1,9 @@
-Overview
+##Overview
+
 The Health Monitoring System is a Java-based application designed to help patients, especially those in rural and suburban areas, keep track of their medical reports efficiently. The application provides an easy-to-use interface for managing patient records and their corresponding medical reports, reducing the need for frequent checkups by maintaining detailed and organized records.
 
-Features
-Home Page:
+##Features
+###Home Page:
 
 Displays a welcome message with the logo "Mercury HealthCare" in a large, bold, blue, italic font.
 Provides options to navigate to the following sections:
