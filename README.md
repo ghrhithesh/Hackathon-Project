@@ -49,3 +49,12 @@ The **Health Monitoring System** is a Java-based application designed to help pa
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/your-username/health-monitoring-system.git
+2. **Navigate to the Project Directory:**
+   ```bash
+   cd health-monitoring-system
+3. **Compile the Java Files:**
+   ```bash
+   javac HealthMonitoringSystemGUI.java
+4. **Run the Application:**
+   ```bash
+   java HealthMonitoringSystemGUI
